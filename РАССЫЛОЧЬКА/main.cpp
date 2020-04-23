@@ -5,15 +5,16 @@
 #include <wtlgo/Network.hpp>
 #include <nlohmann/json.hpp>
 
-using Network = wtlgo::Network;
 using json = nlohmann::json;
 
 #include "config.hpp"
 
 int main(int argc, const char * argv[]) {
+    using namespace wtlgo;
+
     const std::string vk_api = "https://api.vk.com/method/";
 
-    auto chat = json::parse(Network::instance().request(vk_api + "messages.getChat", {
+    auto chat = json::parse(network.request(vk_api + "messages.getChat", {
         {"access_token", access_token}, 
         {"v", v}, 
         {"chat_id", std::to_string(chat_id)}
@@ -27,7 +28,7 @@ int main(int argc, const char * argv[]) {
     for(auto user : users) {
         if(user < 0) continue;
 
-        Network::instance().request(vk_api + "messages.send", {
+        network.request(vk_api + "messages.send", {
             {"access_token", access_token}, 
             {"v", v}, 
             {"user_id", std::to_string(user)},
